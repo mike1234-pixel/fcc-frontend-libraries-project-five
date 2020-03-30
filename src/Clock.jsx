@@ -13,6 +13,8 @@ class Clock extends Component {
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
     this.incrementBreakMinutes = this.incrementBreakMinutes.bind(this);
     this.decrementBreakMinutes = this.decrementBreakMinutes.bind(this);
+    this.handleStart = this.handleStart.bind(this);
+    this.handlePause = this.handlePause.bind(this);
   }
   // click handlers for session minutes (increment and decrement)
   incrementSessionMinutes() {
@@ -49,6 +51,33 @@ class Clock extends Component {
     });
   }
 
+  // countdown timer function which starts onclick of start button
+
+  handleStart() {
+    this.myInterval = setInterval(() => {
+      const { sessionSeconds, sessionMinutes } = this.state;
+      if (sessionSeconds > 0) {
+        this.setState(({ sessionSeconds }) => ({
+          sessionSeconds: sessionSeconds - 1
+        }));
+      }
+      if (sessionSeconds === 0) {
+        if (sessionMinutes === 0) {
+          clearInterval(this.myInterval);
+        } else {
+          this.setState(({ sessionMinutes }) => ({
+            sessionMinutes: sessionMinutes - 1,
+            sessionSeconds: 59
+          }));
+        }
+      }
+    }, 1000);
+  }
+
+  // pause function
+
+  handlePause() {}
+
   render() {
     return (
       <div>
@@ -58,9 +87,14 @@ class Clock extends Component {
           <button onClick={this.decrementSessionMinutes}>-</button>
         </div>
         <div id="clock">
-          <h1>{this.state.sessionMinutes}</h1>
-          <button>Start</button>
-          <button>Pause</button>
+          <h1>
+            {this.state.sessionMinutes}:
+            {this.state.sessionSeconds < 10
+              ? "0" + this.state.sessionSeconds
+              : this.state.sessionSeconds}
+          </h1>
+          <button onClick={this.handleStart}>Start</button>
+          <button onClick={this.handlePause}>Pause</button>
           <button>Reset</button>
         </div>
         <div id="break-length">
@@ -83,6 +117,10 @@ export default Clock;
     3) write a decrement function for session and bind it ✔
     4) write a increment function for break and bind it ✔
     5) write a decrement function for break and bind it ✔
+    ✔ create and display countdown timer
+    6) create countdown timer function which starts onclick of start button ✔
+    7) in the render, when seconds is less than 10, add '0' before seconds, else just display seconds. this gives 0:00 format for seconds. ✔
+    // create onclick to pause timer
 
 */
 
