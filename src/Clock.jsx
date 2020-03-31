@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import alert1 from "./AudioFiles/alert1.mp3";
 
 class Clock extends Component {
   constructor() {
@@ -53,12 +54,7 @@ class Clock extends Component {
     });
   }
 
-  // countdown timer function which starts onclick of start button
-
-  // handleStart
-  // switch timerOn to true
-  // if timerOn = true, execute function
-  // then on pause need to set timerOn to false
+  // start
 
   handleStart() {
     this.setState(prevState => {
@@ -77,6 +73,9 @@ class Clock extends Component {
         if (sessionSeconds === 0) {
           if (sessionMinutes === 0) {
             clearInterval(this.myInterval);
+            const alertOne = new Audio(alert1);
+            alertOne.play();
+            // run next function and play audio here
           } else {
             this.setState(({ sessionMinutes }) => ({
               sessionMinutes: sessionMinutes - 1,
@@ -88,7 +87,7 @@ class Clock extends Component {
     }
   }
 
-  // pause function
+  // pause
 
   handlePause() {
     this.setState(prevState => {
@@ -99,7 +98,7 @@ class Clock extends Component {
     clearInterval(this.myInterval);
   }
 
-  // reset function
+  // reset
 
   handleReset() {
     this.setState(prevState => {
@@ -113,6 +112,9 @@ class Clock extends Component {
     });
     clearInterval(this.myInterval);
   }
+
+  //break timer
+  ///
 
   render() {
     return (
@@ -135,7 +137,13 @@ class Clock extends Component {
         </div>
         <div id="break-length">
           <h2>Break Length</h2>
-          <h3>{this.state.breakMinutes}</h3>
+          <h3>
+            {" "}
+            {this.state.breakMinutes}:
+            {this.state.breakSeconds < 10
+              ? "0" + this.state.breakSeconds
+              : this.state.breakSeconds}
+          </h3>
           <button onClick={this.incrementBreakMinutes}>+</button>
           <button onClick={this.decrementBreakMinutes}>-</button>
         </div>
@@ -163,15 +171,10 @@ export default Clock;
     ✔ bug fixed - added state property 'timerOn' to toggle true/ false. handleStart sets to true, handlePause sets to false
     ✔ handleStart only runs the countdown when timerOn is false
     ✔ false means it's not already running, when it is already running (true) we don't want the countdown to try to execute.
-    
+    10) play audio file when timer hits 00:00 ✔
+    11) run a function in the same place as the audio which starts the break timer
 
 */
-
-// pass the hours and minutes over as two separate pieces of data and assign them to vars
-
-// NOW
-// have starting hours and minutes for session and break times as numbers.
-// Need to convert the countdown timer into functional component and use it
 
 /* Pseudocode 
 Can't convert a number into an actual time as this is not a data type.
@@ -207,8 +210,3 @@ Run a function that decrements the seconds then decrements the minutes when seco
 ↓
 12) start from step 1 again.
 */
-
-// in this case using a class component might make state easier to set and track
-// can also use previous countdown timer.
-// props are read only, data is going to need to be passed around a lot so best to put the whole thing in one clock component
-// use a class component for better readability of state.
