@@ -31,10 +31,15 @@ class Clock extends Component {
   decrementSessionMinutes() {
     this.setState(prevState => {
       return {
-        sessionMinutes: prevState.sessionMinutes - 1
+        sessionMinutes:
+          prevState.sessionMinutes <= 1
+            ? prevState.sessionMinutes
+            : prevState.sessionMinutes - 1
       };
     });
   }
+
+  // ternary stops user decrementing session length to less than 1 minute
 
   // click handlers for break minutes (increment and decrement)
 
@@ -49,7 +54,10 @@ class Clock extends Component {
   decrementBreakMinutes() {
     this.setState(prevState => {
       return {
-        breakMinutes: prevState.breakMinutes - 1
+        breakMinutes:
+          prevState.breakMinutes <= 1
+            ? prevState.breakMinutes
+            : prevState.breakMinutes - 1
       };
     });
   }
@@ -171,8 +179,10 @@ export default Clock;
     ✔ bug fixed - added state property 'timerOn' to toggle true/ false. handleStart sets to true, handlePause sets to false
     ✔ handleStart only runs the countdown when timerOn is false
     ✔ false means it's not already running, when it is already running (true) we don't want the countdown to try to execute.
-    10) play audio file when timer hits 00:00 ✔
-    11) run a function in the same place as the audio which starts the break timer
+    10) add ternaries to decrementSessionMinutes and decrementBreakMinutes to stop user decrementing these to less than 1 minute. ✔
+    11) play audio file when timer hits 00:00 ✔
+    12) run a function in the same place as the audio which starts the break timer
+    
 
 */
 
