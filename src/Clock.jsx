@@ -7,7 +7,8 @@ class Clock extends Component {
       sessionMinutes: 25,
       sessionSeconds: 0,
       breakMinutes: 5,
-      breakSeconds: 0
+      breakSeconds: 0,
+      timerOn: false
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -54,30 +55,47 @@ class Clock extends Component {
 
   // countdown timer function which starts onclick of start button
 
+  // handleStart
+  // switch timerOn to true
+  // if timerOn = true, execute function
+  // then on pause need to set timerOn to false
+
   handleStart() {
-    this.myInterval = setInterval(() => {
-      const { sessionSeconds, sessionMinutes } = this.state;
-      if (sessionSeconds > 0) {
-        this.setState(({ sessionSeconds }) => ({
-          sessionSeconds: sessionSeconds - 1
-        }));
-      }
-      if (sessionSeconds === 0) {
-        if (sessionMinutes === 0) {
-          clearInterval(this.myInterval);
-        } else {
-          this.setState(({ sessionMinutes }) => ({
-            sessionMinutes: sessionMinutes - 1,
-            sessionSeconds: 59
+    this.setState(prevState => {
+      return {
+        timerOn: true
+      };
+    });
+    if (this.state.timerOn !== true) {
+      this.myInterval = setInterval(() => {
+        const { sessionSeconds, sessionMinutes } = this.state;
+        if (sessionSeconds > 0) {
+          this.setState(({ sessionSeconds }) => ({
+            sessionSeconds: sessionSeconds - 1
           }));
         }
-      }
-    }, 1000);
+        if (sessionSeconds === 0) {
+          if (sessionMinutes === 0) {
+            clearInterval(this.myInterval);
+          } else {
+            this.setState(({ sessionMinutes }) => ({
+              sessionMinutes: sessionMinutes - 1,
+              sessionSeconds: 59
+            }));
+          }
+        }
+      }, 1000);
+    }
   }
 
   // pause function
 
   handlePause() {
+    this.setState(prevState => {
+      return {
+        timerOn: false
+      };
+    });
     clearInterval(this.myInterval);
   }
 
@@ -89,7 +107,8 @@ class Clock extends Component {
         sessionMinutes: 25,
         sessionSeconds: 0,
         breakMinutes: 5,
-        breakSeconds: 0
+        breakSeconds: 0,
+        timerOn: false
       };
     });
     clearInterval(this.myInterval);
@@ -140,10 +159,11 @@ export default Clock;
     ✔ create onclick to pause and reset functions
     8) create onclick pause handler ✔
     9) create onclick reset handler - resets state to original and clearInterval method stops it automatically counting down again ✔
-    // bug - all works fine unless you click start again by mistake - then pause doesn't work, 
-    // reset does work but it starts counting down - so the problem will be something to do with clearInterval
-    // this could be solved by only allowing handleStart to run if it's not currently running
-    // the handleStart, when clicked a second time, is being added to the event queue, so it disrupts other functions being run.
+    ✔ bug - all works fine unless you click start again by mistake - then pause doesn't work, and the countdown speeds up??
+    ✔ bug fixed - added state property 'timerOn' to toggle true/ false. handleStart sets to true, handlePause sets to false
+    ✔ handleStart only runs the countdown when timerOn is false
+    ✔ false means it's not already running, when it is already running (true) we don't want the countdown to try to execute.
+    
 
 */
 
