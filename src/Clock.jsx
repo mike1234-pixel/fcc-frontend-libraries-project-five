@@ -15,6 +15,7 @@ class Clock extends Component {
     this.decrementBreakMinutes = this.decrementBreakMinutes.bind(this);
     this.handleStart = this.handleStart.bind(this);
     this.handlePause = this.handlePause.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
   // click handlers for session minutes (increment and decrement)
   incrementSessionMinutes() {
@@ -76,7 +77,23 @@ class Clock extends Component {
 
   // pause function
 
-  handlePause() {}
+  handlePause() {
+    clearInterval(this.myInterval);
+  }
+
+  // reset function
+
+  handleReset() {
+    this.setState(prevState => {
+      return {
+        sessionMinutes: 25,
+        sessionSeconds: 0,
+        breakMinutes: 5,
+        breakSeconds: 0
+      };
+    });
+    clearInterval(this.myInterval);
+  }
 
   render() {
     return (
@@ -95,7 +112,7 @@ class Clock extends Component {
           </h1>
           <button onClick={this.handleStart}>Start</button>
           <button onClick={this.handlePause}>Pause</button>
-          <button>Reset</button>
+          <button onClick={this.handleReset}>Reset</button>
         </div>
         <div id="break-length">
           <h2>Break Length</h2>
@@ -120,7 +137,13 @@ export default Clock;
     ✔ create and display countdown timer
     6) create countdown timer function which starts onclick of start button ✔
     7) in the render, when seconds is less than 10, add '0' before seconds, else just display seconds. this gives 0:00 format for seconds. ✔
-    // create onclick to pause timer
+    ✔ create onclick to pause and reset functions
+    8) create onclick pause handler ✔
+    9) create onclick reset handler - resets state to original and clearInterval method stops it automatically counting down again ✔
+    // bug - all works fine unless you click start again by mistake - then pause doesn't work, 
+    // reset does work but it starts counting down - so the problem will be something to do with clearInterval
+    // this could be solved by only allowing handleStart to run if it's not currently running
+    // the handleStart, when clicked a second time, is being added to the event queue, so it disrupts other functions being run.
 
 */
 
