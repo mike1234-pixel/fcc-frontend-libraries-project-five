@@ -9,7 +9,8 @@ class Clock extends Component {
       sessionSeconds: 0,
       breakMinutes: 5,
       breakSeconds: 0,
-      timerOn: false
+      timerOn: false,
+      breakTimerOn: false
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -84,6 +85,7 @@ class Clock extends Component {
             const alertOne = new Audio(alert1);
             alertOne.play();
             // run next function and play audio here
+            this.startBreakTimer();
           } else {
             this.setState(({ sessionMinutes }) => ({
               sessionMinutes: sessionMinutes - 1,
@@ -115,14 +117,44 @@ class Clock extends Component {
         sessionSeconds: 0,
         breakMinutes: 5,
         breakSeconds: 0,
-        timerOn: false
+        timerOn: false,
+        breakTimerOn: false
       };
     });
     clearInterval(this.myInterval);
   }
 
   //break timer
-  ///
+  startBreakTimer() {
+    this.setState(prevState => {
+      return {
+        breaktimerOn: true
+      };
+    });
+    if (this.state.breakTimerOn !== true) {
+      this.myInterval = setInterval(() => {
+        const { breakSeconds, breakMinutes } = this.state;
+        if (breakSeconds > 0) {
+          this.setState(({ breakSeconds }) => ({
+            breakSeconds: breakSeconds - 1
+          }));
+        }
+        if (breakSeconds === 0) {
+          if (breakMinutes === 0) {
+            clearInterval(this.myInterval);
+            const alertOne = new Audio(alert1);
+            alertOne.play();
+            // run next function and play audio here
+          } else {
+            this.setState(({ breakMinutes }) => ({
+              breakMinutes: breakMinutes - 1,
+              breakSeconds: 59
+            }));
+          }
+        }
+      }, 1000);
+    }
+  }
 
   render() {
     return (
