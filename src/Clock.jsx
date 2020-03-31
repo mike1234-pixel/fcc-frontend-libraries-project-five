@@ -5,6 +5,9 @@ class Clock extends Component {
   constructor() {
     super();
     this.state = {
+      // need immutable starting values for sesh minutes and break minutes
+      sessionStart: 25,
+      breakStart: 5,
       sessionMinutes: 25,
       sessionSeconds: 0,
       breakMinutes: 5,
@@ -25,10 +28,10 @@ class Clock extends Component {
   incrementSessionMinutes() {
     this.setState(prevState => {
       return {
-        sessionMinutes:
-          prevState.sessionMinutes === 60
-            ? prevState.sessionMinutes
-            : prevState.sessionMinutes + 1
+        sessionStart:
+          prevState.sessionStart === 60
+            ? prevState.sessionStart
+            : prevState.sessionStart + 1
       };
     });
   }
@@ -37,10 +40,10 @@ class Clock extends Component {
   decrementSessionMinutes() {
     this.setState(prevState => {
       return {
-        sessionMinutes:
-          prevState.sessionMinutes <= 1
-            ? prevState.sessionMinutes
-            : prevState.sessionMinutes - 1
+        sessionStart:
+          prevState.sessionStart <= 1
+            ? prevState.sessionStart
+            : prevState.sessionStart - 1
       };
     });
   }
@@ -52,7 +55,7 @@ class Clock extends Component {
   incrementBreakMinutes() {
     this.setState(prevState => {
       return {
-        breakMinutes: prevState.breakMinutes + 1
+        breakStart: prevState.breakStart + 1
       };
     });
   }
@@ -60,10 +63,10 @@ class Clock extends Component {
   decrementBreakMinutes() {
     this.setState(prevState => {
       return {
-        breakMinutes:
-          prevState.breakMinutes <= 1
-            ? prevState.breakMinutes
-            : prevState.breakMinutes - 1
+        breakStart:
+          prevState.breakStart <= 1
+            ? prevState.breakStart
+            : prevState.breakStart - 1
       };
     });
   }
@@ -71,12 +74,20 @@ class Clock extends Component {
   // start
 
   handleStart() {
+    // set sessionMinutes to sessionStart number and breakMinutes to breakStart number
+    var userSesh = this.state.sessionStart;
+    var userBreak = this.state.breakStart;
+
     this.setState(prevState => {
       return {
         timerOn: true,
-        sequenceNumber: prevState.sequenceNumber + 1
+        sequenceNumber: prevState.sequenceNumber + 1,
+        sessionMinutes: userSesh,
+        breakMinutes: userBreak
       };
     });
+
+    // start timer
     if (this.state.timerOn !== true) {
       this.myInterval = setInterval(() => {
         const { sessionSeconds, sessionMinutes } = this.state;
@@ -173,6 +184,10 @@ class Clock extends Component {
     return (
       <div>
         <div id="session-div">
+          <div>Set Session Length</div>
+          <span>{this.state.sessionStart}</span>
+          <div>Set Break Length</div>
+          <span>{this.state.breakStart}</span>
           <h2 id="session-label">Session Length</h2>
           <button onClick={this.incrementSessionMinutes} id="session-increment">
             +
@@ -244,8 +259,12 @@ export default Clock;
     13) add new state container called 'sequenceNumber' which tracks how many times handleStart has run, longerBreak runs when sequenceNumber is divisible by 4 (so on the fourth, eighth, twelth rounds etc) ✔
     14) at the top of handleStart increment sequenceNumber ✔
     15) where breakTimer is called add a control statement - if sequenceNumber % 4 === 0, run longerBreak, else run breakTimer
+    // problem: the clock needs to remember the initial starting session and break lengths
+    // however, these values are being mutated/decremented by the timer 
+    // There needs to be two vars - two immutable state containers for sesh and break lengths, and two separate ones used for decrementing in the timer
 
-    
+    // SOLUTION: sessionStart and sessionBreak are immutable and the user sets these
+    // pass these values to sessionMinutes and BreakMinutes, then execute handleStart
 
 */
 
