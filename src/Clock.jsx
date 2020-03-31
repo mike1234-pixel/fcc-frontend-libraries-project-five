@@ -10,7 +10,8 @@ class Clock extends Component {
       breakMinutes: 5,
       breakSeconds: 0,
       timerOn: false,
-      breakTimerOn: false
+      breakTimerOn: false,
+      sequenceNumber: 0
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -24,10 +25,14 @@ class Clock extends Component {
   incrementSessionMinutes() {
     this.setState(prevState => {
       return {
-        sessionMinutes: prevState.sessionMinutes + 1
+        sessionMinutes:
+          prevState.sessionMinutes === 60
+            ? prevState.sessionMinutes
+            : prevState.sessionMinutes + 1
       };
     });
   }
+  // ternary stops user incrementing session length to greater than 60
 
   decrementSessionMinutes() {
     this.setState(prevState => {
@@ -68,7 +73,8 @@ class Clock extends Component {
   handleStart() {
     this.setState(prevState => {
       return {
-        timerOn: true
+        timerOn: true,
+        sequenceNumber: prevState.sequenceNumber + 1
       };
     });
     if (this.state.timerOn !== true) {
@@ -85,7 +91,11 @@ class Clock extends Component {
             const alertOne = new Audio(alert1);
             alertOne.play();
             // run next function and play audio here
-            this.startBreakTimer();
+            if (this.state.sequenceNumber % 4 === 0) {
+              this.startLongBreakTimer();
+            } else {
+              this.startBreakTimer();
+            }
           } else {
             this.setState(({ sessionMinutes }) => ({
               sessionMinutes: sessionMinutes - 1,
@@ -118,7 +128,8 @@ class Clock extends Component {
         breakMinutes: 5,
         breakSeconds: 0,
         timerOn: false,
-        breakTimerOn: false
+        breakTimerOn: false,
+        sequenceNumber: 0
       };
     });
     clearInterval(this.myInterval);
@@ -156,36 +167,50 @@ class Clock extends Component {
     }
   }
 
+  // long break timer
+
   render() {
     return (
       <div>
-        <div id="session-length">
-          <h2>Session Length</h2>
-          <button onClick={this.incrementSessionMinutes}>+</button>
-          <button onClick={this.decrementSessionMinutes}>-</button>
+        <div id="session-div">
+          <h2 id="session-label">Session Length</h2>
+          <button onClick={this.incrementSessionMinutes} id="session-increment">
+            +
+          </button>
+          <button onClick={this.decrementSessionMinutes} id="session-decrement">
+            -
+          </button>
         </div>
         <div id="clock">
-          <h1>
-            {this.state.sessionMinutes}:
+          <h1 id="time-left">
+            <span id="session-length">{this.state.sessionMinutes}</span>:
             {this.state.sessionSeconds < 10
               ? "0" + this.state.sessionSeconds
               : this.state.sessionSeconds}
           </h1>
-          <button onClick={this.handleStart}>Start</button>
+          <button onClick={this.handleStart} id="start_stop">
+            Start
+          </button>
           <button onClick={this.handlePause}>Pause</button>
-          <button onClick={this.handleReset}>Reset</button>
+          <button onClick={this.handleReset} id="reset">
+            Reset
+          </button>
         </div>
-        <div id="break-length">
-          <h2>Break Length</h2>
-          <h3>
+        <div id="break-div">
+          <h2 id="break-label">Break Length</h2>
+          <h3 id="break-length">
             {" "}
-            {this.state.breakMinutes}:
+            <span id="break-length">{this.state.breakMinutes}</span>:
             {this.state.breakSeconds < 10
               ? "0" + this.state.breakSeconds
               : this.state.breakSeconds}
           </h3>
-          <button onClick={this.incrementBreakMinutes}>+</button>
-          <button onClick={this.decrementBreakMinutes}>-</button>
+          <button onClick={this.incrementBreakMinutes} id="break-increment">
+            +
+          </button>
+          <button onClick={this.decrementBreakMinutes} id="break-decrement">
+            -
+          </button>
         </div>
       </div>
     );
@@ -214,6 +239,12 @@ export default Clock;
     10) add ternaries to decrementSessionMinutes and decrementBreakMinutes to stop user decrementing these to less than 1 minute. ✔
     11) play audio file when timer hits 00:00 ✔
     12) run a function in the same place as the audio which starts the break timer
+    ✔ bug - startBreakTimer running by itself on page load
+    ✔ bug fixed - removed the bind for startBreakTimer from the constructor. Now works.
+    13) add new state container called 'sequenceNumber' which tracks how many times handleStart has run, longerBreak runs when sequenceNumber is divisible by 4 (so on the fourth, eighth, twelth rounds etc) ✔
+    14) at the top of handleStart increment sequenceNumber ✔
+    15) where breakTimer is called add a control statement - if sequenceNumber % 4 === 0, run longerBreak, else run breakTimer
+
     
 
 */
@@ -226,21 +257,21 @@ Set time interval of 1000ms
 Run a function that decrements the seconds then decrements the minutes when seconds reach 00
 25:00
 
-0) timer starts onclick
+0) timer starts onclick ✔
 ↓
-1) seconds number decrements every 1000ms from 59
+1) seconds number decrements every 1000ms from 59 ✔
 ↓
-2) if seconds is 0
+2) if seconds is 0 ✔
 ↓
-3) minutes decrement, and seconds reset to 59
+3) minutes decrement, and seconds reset to 59 ✔
 ↓
-4) until 00:00 (minutes and seconds are 0)
+4) until 00:00 (minutes and seconds are 0) ✔
 ↓
-5) we start counting down from the break -- 05:00
+5) we start counting down from the break -- 05:00 ✔
 ↓
-6) same decrementing process as above
+6) same decrementing process as above ✔
 ↓
-7) until 00:00 (minutes and seconds are 0)
+7) until 00:00 (minutes and seconds are 0) ✔
 ↓
 8) start decrementing from session length again
 ↓
@@ -252,3 +283,5 @@ Run a function that decrements the seconds then decrements the minutes when seco
 ↓
 12) start from step 1 again.
 */
+
+// audio file from here: http://soundbible.com/2157-Text-Message-Alert-4.html
