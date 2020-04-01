@@ -12,8 +12,7 @@ class Clock extends Component {
       breakMinutes: 5,
       breakSeconds: 0,
       breakMinutesDecrementing: 5,
-      breakSecondsDecrementing: 0,
-      timerOn: false
+      breakSecondsDecrementing: 0
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -84,42 +83,38 @@ class Clock extends Component {
     let sessionMinutesTimer = this.state.sessionMinutes;
     let sessionSecondsTimer = this.state.sessionSeconds;
 
-    if (this.state.timerOn !== true) {
-      this.setState({ timerOn: true });
-      console.log(this.state.timerOn);
-      this.myInterval = setInterval(() => {
-        if (sessionSecondsTimer > 0) {
-          sessionSecondsTimer = sessionSecondsTimer - 1;
+    console.log(this.state.timerOn);
+    this.myInterval = setInterval(() => {
+      if (sessionSecondsTimer > 0) {
+        sessionSecondsTimer = sessionSecondsTimer - 1;
+        this.setState(() => {
+          return {
+            sessionSecondsDecrementing: sessionSecondsTimer
+          };
+        });
+      }
+      if (sessionSecondsTimer === 0) {
+        if (sessionMinutesTimer === 0) {
+          console.log(this.state.timerOn);
+          clearInterval(this.myInterval);
+
+          const alertOne = new Audio(alert1);
+          alertOne.play();
+          // run next function and play audio here
+
+          this.startBreakTimer();
+        } else {
+          sessionMinutesTimer = sessionMinutesTimer - 1;
+          sessionSecondsTimer = 59;
           this.setState(() => {
             return {
+              sessionMinutesDecrementing: sessionMinutesTimer,
               sessionSecondsDecrementing: sessionSecondsTimer
             };
           });
         }
-        if (sessionSecondsTimer === 0) {
-          if (sessionMinutesTimer === 0) {
-            this.setState({ timerOn: false });
-            console.log(this.state.timerOn);
-            clearInterval(this.myInterval);
-
-            const alertOne = new Audio(alert1);
-            alertOne.play();
-            // run next function and play audio here
-
-            this.startBreakTimer();
-          } else {
-            sessionMinutesTimer = sessionMinutesTimer - 1;
-            sessionSecondsTimer = 59;
-            this.setState(() => {
-              return {
-                sessionMinutesDecrementing: sessionMinutesTimer,
-                sessionSecondsDecrementing: sessionSecondsTimer
-              };
-            });
-          }
-        }
-      }, 1000);
-    }
+      }
+    }, 1000);
   }
   // handleStart does trigger startBreakTimer at the end, so there must be a problem with startBreakTimer itself
 
@@ -158,47 +153,6 @@ class Clock extends Component {
       }
     }, 1000);
   }
-
-  //break timer
-  /*
-  startBreakTimer() {
-    this.setState(prevState => {
-      return {
-        breaktimerOn: true
-      };
-    });
-    if (this.state.breakTimerOn !== true) {
-      this.myInterval = setInterval(() => {
-        const { breakSeconds, breakMinutes } = this.state;
-        if (breakSeconds > 0) {
-          this.setState(({ breakSeconds }) => ({
-            breakSeconds: breakSeconds - 1
-          }));
-        }
-        if (breakSeconds === 0) {
-          if (breakMinutes === 0) {
-            clearInterval(this.myInterval);
-            const alertOne = new Audio(alert1);
-            alertOne.play();
-            this.setState(() => {
-              return {
-                breakTimerOn: false
-              };
-            });
-            // run next function and play audio here - THIS IS WHERE I NEED TO RUN HANDLESTART AGAIN, something is preventing it running.
-            // it should run because handlestart triggers this function in the same way
-            this.handleStart();
-          } else {
-            this.setState(({ breakMinutes }) => ({
-              breakMinutes: breakMinutes - 1,
-              breakSeconds: 59
-            }));
-          }
-        }
-      }, 1000);
-    }
-  }
-  */
 
   // reset
 
