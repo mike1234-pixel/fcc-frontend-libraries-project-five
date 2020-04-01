@@ -85,7 +85,8 @@ class Clock extends Component {
 
   setMinutesDecrement() {
     this.setState({
-      sessionMinutesDecrementing: this.state.sessionMinutes - 1
+      sessionMinutesDecrementing:
+        this.state.sessionMinutes <= 1 ? 1 : this.state.sessionMinutes - 1
     });
   }
 
@@ -97,7 +98,8 @@ class Clock extends Component {
 
   setBreakMinutesDecrement() {
     this.setState({
-      breakMinutesDecrementing: this.state.breakMinutes - 1
+      breakMinutesDecrementing:
+        this.state.breakMinutes <= 1 ? 1 : this.state.breakMinutes - 1
     });
   }
 
