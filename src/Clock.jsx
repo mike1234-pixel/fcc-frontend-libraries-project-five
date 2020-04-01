@@ -245,7 +245,8 @@ class Clock extends Component {
         breakMinutes: 5,
         breakSeconds: 0,
         breakMinutesDecrementing: 5,
-        breakSecondsDecrementing: 0
+        breakSecondsDecrementing: 0,
+        sequenceNumber: 0
       };
     });
     clearInterval(this.myInterval);
@@ -322,6 +323,8 @@ class Clock extends Component {
               ? "0" + this.state.breakSecondsDecrementing
               : this.state.breakSecondsDecrementing}
           </h3>
+          <h3>Current Pomodoro:</h3>
+          <p>{this.state.sequenceNumber}</p>
         </div>
       </div>
     );
@@ -329,9 +332,3 @@ class Clock extends Component {
 }
 
 export default Clock;
-
-// set 8 value at once (four of each of session and break lengths), and run as a chain
-// if seshvalue1 == 0 and breakvalue == 0 (both values depleted),
-// run the function with seshvalue 2 and breakvalue2 as starting points
-
-//           <button onClick={this.handlePause}>Pause</button>
