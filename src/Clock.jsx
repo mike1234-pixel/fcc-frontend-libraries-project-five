@@ -76,16 +76,17 @@ class Clock extends Component {
   // pass the throwaway values to a different state, sessionMinutesDecrementing, and display them
   // pass the throwaway values to the new state values wherever the throwaway values are changed
   handleStart() {
-    this.setState(() => {
-      return {
-        timerOn: true
-      };
-    });
+    //disable start button
+    this.refs.btn.setAttribute("disabled", "disabled");
+    // should have changed timerOn to true but console logging false on first run
+
     //declare throwaway vars
     let sessionMinutesTimer = this.state.sessionMinutes;
     let sessionSecondsTimer = this.state.sessionSeconds;
 
     if (this.state.timerOn !== true) {
+      this.setState({ timerOn: true });
+      console.log(this.state.timerOn);
       this.myInterval = setInterval(() => {
         if (sessionSecondsTimer > 0) {
           sessionSecondsTimer = sessionSecondsTimer - 1;
@@ -97,15 +98,14 @@ class Clock extends Component {
         }
         if (sessionSecondsTimer === 0) {
           if (sessionMinutesTimer === 0) {
+            this.setState({ timerOn: false });
+            console.log(this.state.timerOn);
             clearInterval(this.myInterval);
+
             const alertOne = new Audio(alert1);
             alertOne.play();
             // run next function and play audio here
-            this.setState(() => {
-              return {
-                timerOn: false
-              };
-            });
+
             this.startBreakTimer();
           } else {
             sessionMinutesTimer = sessionMinutesTimer - 1;
@@ -121,7 +121,6 @@ class Clock extends Component {
       }, 1000);
     }
   }
-
   // handleStart does trigger startBreakTimer at the end, so there must be a problem with startBreakTimer itself
 
   startBreakTimer() {
@@ -204,6 +203,7 @@ class Clock extends Component {
   // reset
 
   handleReset() {
+    this.refs.btn.removeAttribute("disabled", "disabled");
     this.setState(prevState => {
       return {
         sessionMinutes: 25,
@@ -242,7 +242,7 @@ class Clock extends Component {
               ? "0" + this.state.sessionSecondsDecrementing
               : this.state.sessionSecondsDecrementing}
           </h1>
-          <button onClick={this.handleStart} id="start_stop">
+          <button onClick={this.handleStart} id="start_stop" ref="btn">
             Start
           </button>
           <button onClick={this.handleReset} id="reset">
