@@ -12,7 +12,8 @@ class Clock extends Component {
       breakMinutes: 5,
       breakSeconds: 0,
       breakMinutesDecrementing: 5,
-      breakSecondsDecrementing: 0
+      breakSecondsDecrementing: 0,
+      sequenceNumber: 0
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -73,6 +74,9 @@ class Clock extends Component {
     });
   }
 
+  // below four functions coordinate user deifned session lengths with what's displayed in the timer, this is changed to
+  // what's in the throwaway timer variables in handleStart
+
   setMinutesIncrement() {
     this.setState({
       sessionMinutesDecrementing: this.state.sessionMinutes + 1
@@ -99,20 +103,22 @@ class Clock extends Component {
 
   // start
 
-  // he's setting a new var in the function as the timer, passing the value of sessionMins to it, using that new value in the function then throwing it away at the end
-  // these two throwaway vars are now local vars, so how do i display them on the interface
-  // pass the throwaway values to a different state, sessionMinutesDecrementing, and display them
-  // pass the throwaway values to the new state values wherever the throwaway values are changed
   handleStart() {
     //disable start button
     this.refs.btn.setAttribute("disabled", "disabled");
-    // should have changed timerOn to true but console logging false on first run
+
+    this.setState(prevState => {
+      return {
+        sequenceNumber: prevState.sequenceNumber + 1
+      };
+    });
+
+    console.log(this.state.sequenceNumber);
 
     //declare throwaway vars
     let sessionMinutesTimer = this.state.sessionMinutes;
     let sessionSecondsTimer = this.state.sessionSeconds;
 
-    console.log(this.state.timerOn);
     this.myInterval = setInterval(() => {
       if (sessionSecondsTimer > 0) {
         sessionSecondsTimer = sessionSecondsTimer - 1;
@@ -124,14 +130,20 @@ class Clock extends Component {
       }
       if (sessionSecondsTimer === 0) {
         if (sessionMinutesTimer === 0) {
-          console.log(this.state.timerOn);
           clearInterval(this.myInterval);
 
           const alertOne = new Audio(alert1);
           alertOne.play();
           // run next function and play audio here
-
-          this.startBreakTimer();
+          // if sequenceNumber is not zero and is divisible by 4, run startLongBreakTimer function, else run startBreakTimer
+          if (
+            this.state.sequenceNumber !== 0 &&
+            this.state.sequenceNumber % 4 === 0
+          ) {
+            this.startLongBreakTimer();
+          } else {
+            this.startBreakTimer();
+          }
         } else {
           sessionMinutesTimer = sessionMinutesTimer - 1;
           sessionSecondsTimer = 59;
@@ -150,6 +162,41 @@ class Clock extends Component {
   startBreakTimer() {
     //declare throwaway vars
     let breakMinutesTimer = this.state.breakMinutes;
+    let breakSecondsTimer = this.state.breakSeconds;
+
+    this.myInterval = setInterval(() => {
+      if (breakSecondsTimer > 0) {
+        breakSecondsTimer = breakSecondsTimer - 1;
+        this.setState(() => {
+          return {
+            breakSecondsDecrementing: breakSecondsTimer
+          };
+        });
+      }
+      if (breakSecondsTimer === 0) {
+        if (breakMinutesTimer === 0) {
+          clearInterval(this.myInterval);
+          const alertOne = new Audio(alert1);
+          alertOne.play();
+          // run next function and play audio here
+
+          setTimeout(this.handleStart, 2000);
+        } else {
+          breakMinutesTimer = breakMinutesTimer - 1;
+          breakSecondsTimer = 59;
+          this.setState(() => {
+            return {
+              breakMinutesDecrementing: breakMinutesTimer,
+              breakSecondsDecrementing: breakSecondsTimer
+            };
+          });
+        }
+      }
+    }, 1000);
+  }
+
+  startLongBreakTimer() {
+    let breakMinutesTimer = this.state.breakMinutes * 4;
     let breakSecondsTimer = this.state.breakSeconds;
 
     this.myInterval = setInterval(() => {
