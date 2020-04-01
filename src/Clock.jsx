@@ -20,7 +20,12 @@ class Clock extends Component {
     this.decrementBreakMinutes = this.decrementBreakMinutes.bind(this);
     this.handleStart = this.handleStart.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.setMinutesIncrement = this.setMinutesIncrement.bind(this);
+    this.setMinutesDecrement = this.setMinutesDecrement.bind(this);
+    this.setBreakMinutesIncrement = this.setBreakMinutesIncrement.bind(this);
+    this.setBreakMinutesDecrement = this.setBreakMinutesDecrement.bind(this);
   }
+
   // click handlers for session minutes (increment and decrement)
   incrementSessionMinutes() {
     this.setState(prevState => {
@@ -65,6 +70,30 @@ class Clock extends Component {
             ? prevState.breakMinutes
             : prevState.breakMinutes - 1
       };
+    });
+  }
+
+  setMinutesIncrement() {
+    this.setState({
+      sessionMinutesDecrementing: this.state.sessionMinutes + 1
+    });
+  }
+
+  setMinutesDecrement() {
+    this.setState({
+      sessionMinutesDecrementing: this.state.sessionMinutes - 1
+    });
+  }
+
+  setBreakMinutesIncrement() {
+    this.setState({
+      breakMinutesDecrementing: this.state.breakMinutes + 1
+    });
+  }
+
+  setBreakMinutesDecrement() {
+    this.setState({
+      breakMinutesDecrementing: this.state.breakMinutes - 1
     });
   }
 
@@ -161,13 +190,13 @@ class Clock extends Component {
     this.setState(prevState => {
       return {
         sessionMinutes: 25,
-        sessionMinutesDecrementing: 25,
         sessionSeconds: 0,
+        sessionMinutesDecrementing: 25,
         sessionSecondsDecrementing: 0,
         breakMinutes: 5,
         breakSeconds: 0,
-        timerOn: false,
-        breakTimerOn: false
+        breakMinutesDecrementing: 5,
+        breakSecondsDecrementing: 0
       };
     });
     clearInterval(this.myInterval);
@@ -178,10 +207,22 @@ class Clock extends Component {
       <div>
         <div id="session-div">
           <h2 id="session-label">Session Length</h2>
-          <button onClick={this.incrementSessionMinutes} id="session-increment">
+          <button
+            onClick={() => {
+              this.setMinutesIncrement();
+              this.incrementSessionMinutes();
+            }}
+            id="session-increment"
+          >
             +
           </button>
-          <button onClick={this.decrementSessionMinutes} id="session-decrement">
+          <button
+            onClick={() => {
+              this.setMinutesDecrement();
+              this.decrementSessionMinutes();
+            }}
+            id="session-decrement"
+          >
             -
           </button>
           <h2>Session Minutes: {this.state.sessionMinutes}</h2>
@@ -205,10 +246,22 @@ class Clock extends Component {
         </div>
         <div id="break-div">
           <h2 id="break-label">Break Length</h2>
-          <button onClick={this.incrementBreakMinutes} id="break-increment">
+          <button
+            onClick={() => {
+              this.setBreakMinutesIncrement();
+              this.incrementBreakMinutes();
+            }}
+            id="break-increment"
+          >
             +
           </button>
-          <button onClick={this.decrementBreakMinutes} id="break-decrement">
+          <button
+            onClick={() => {
+              this.setBreakMinutesDecrement();
+              this.decrementBreakMinutes();
+            }}
+            id="break-decrement"
+          >
             -
           </button>
           <h2>Break Minutes: {this.state.breakMinutes}</h2>
