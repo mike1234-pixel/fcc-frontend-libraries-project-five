@@ -1,4 +1,10 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+NAME
+
+Pomodoro Clock by Michael Tandy
+
+DESCRIPTION
+
+This is a pomodoro clock application built using React. It uses no libraries other than React. Attributions for audio files are given in the files where the audio files are used.
 
 ## Available Scripts
 

@@ -257,6 +257,9 @@ class Clock extends Component {
   }
 
   render() {
+    const date = new Date();
+    const year = date.getFullYear();
+
     return (
       <div>
         <div id="session-div">
@@ -339,7 +342,8 @@ class Clock extends Component {
           <h2>Long Break Length: {this.state.breakMinutes * 4 + " minutes"}</h2>
           <h3>Current Pomodoro:</h3>
           <p>{this.state.sequenceNumber}</p>
-          <p></p>
+          <br></br>
+          <p>Built by Mike Tandy {year} with React</p>
         </div>
       </div>
     );
