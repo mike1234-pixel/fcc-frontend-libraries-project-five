@@ -4,6 +4,8 @@ Pomodoro Clock by Michael Tandy
 
 DESCRIPTION
 
+Link to deployed project here: https://master.d2icos6v1wkh08.amplifyapp.com/
+
 This is a pomodoro clock application built using React. It uses no libraries other than React. Attributions for audio files are given in the files where the audio files are used.
 
 ## Available Scripts
