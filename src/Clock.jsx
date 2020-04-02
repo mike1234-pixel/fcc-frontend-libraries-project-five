@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import alert1 from "./AudioFiles/alert1.mp3";
+import alert2 from "./AudioFiles/alert2.mp3";
+import alert3 from "./AudioFiles/alert3.mp3";
 
 class Clock extends Component {
   constructor() {
@@ -134,16 +136,18 @@ class Clock extends Component {
         if (sessionMinutesTimer === 0) {
           clearInterval(this.myInterval);
 
-          const alertOne = new Audio(alert1);
-          alertOne.play();
           // run next function and play audio here
           // if sequenceNumber is not zero and is divisible by 4, run startLongBreakTimer function, else run startBreakTimer
           if (
             this.state.sequenceNumber !== 0 &&
             this.state.sequenceNumber % 4 === 0
           ) {
+            const alertThree = new Audio(alert3);
+            alertThree.play();
             this.startLongBreakTimer();
           } else {
+            const alertOne = new Audio(alert1);
+            alertOne.play();
             this.startBreakTimer();
           }
         } else {
@@ -178,8 +182,8 @@ class Clock extends Component {
       if (breakSecondsTimer === 0) {
         if (breakMinutesTimer === 0) {
           clearInterval(this.myInterval);
-          const alertOne = new Audio(alert1);
-          alertOne.play();
+          const alertTwo = new Audio(alert2);
+          alertTwo.play();
           // run next function and play audio here
 
           setTimeout(this.handleStart, 2000);
@@ -256,7 +260,12 @@ class Clock extends Component {
     return (
       <div>
         <div id="session-div">
-          <h2 id="session-label">Session Length</h2>
+          <h2>
+            Session Length:{" "}
+            {this.state.sessionMinutes === 1
+              ? +this.state.sessionMinutes + " minute"
+              : this.state.sessionMinutes + " minutes"}
+          </h2>
           <button
             onClick={() => {
               this.setMinutesIncrement();
@@ -275,10 +284,9 @@ class Clock extends Component {
           >
             -
           </button>
-          <h2>Session Minutes: {this.state.sessionMinutes}</h2>
         </div>
         <div id="clock">
-          <h1 id="time-left">
+          <h2 id="time-left">
             <span id="session-length">
               {this.state.sessionMinutesDecrementing}
             </span>
@@ -286,7 +294,7 @@ class Clock extends Component {
             {this.state.sessionSecondsDecrementing < 10
               ? "0" + this.state.sessionSecondsDecrementing
               : this.state.sessionSecondsDecrementing}
-          </h1>
+          </h2>
           <button onClick={this.handleStart} id="start_stop" ref="btn">
             Start
           </button>
@@ -295,7 +303,12 @@ class Clock extends Component {
           </button>
         </div>
         <div id="break-div">
-          <h2 id="break-label">Break Length</h2>
+          <h2>
+            Break Length:{" "}
+            {this.state.breakMinutes === 1
+              ? +this.state.breakMinutes + " minute"
+              : this.state.breakMinutes + " minutes"}
+          </h2>
           <button
             onClick={() => {
               this.setBreakMinutesIncrement();
@@ -314,17 +327,19 @@ class Clock extends Component {
           >
             -
           </button>
-          <h2>Break Minutes: {this.state.breakMinutes}</h2>
-          <h3 id="break-length">
+
+          <h2 id="break-length">
             {" "}
             <span id="break-length">{this.state.breakMinutesDecrementing}</span>
             :
             {this.state.breakSecondsDecrementing < 10
               ? "0" + this.state.breakSecondsDecrementing
               : this.state.breakSecondsDecrementing}
-          </h3>
+          </h2>
+          <h2>Long Break Length: {this.state.breakMinutes * 4 + " minutes"}</h2>
           <h3>Current Pomodoro:</h3>
           <p>{this.state.sequenceNumber}</p>
+          <p></p>
         </div>
       </div>
     );
@@ -332,3 +347,8 @@ class Clock extends Component {
 }
 
 export default Clock;
+
+// Attributions for audio files
+// alert1.mp3 - 'Text Message alert 4' by Daniel Simon -  This audio file is made available under the Creative Commons 3.0 licence:  http://soundbible.com/2154-Text-Message-Alert-1.html
+// alert2.mp3 - 'Text Message alert 1' by Daniel Simon -  This audio file is made available under the Creative Commons 3.0 licence: http://soundbible.com/2157-Text-Message-Alert-4.html
+// alert3.mp3 - 'Text Message alert 3' by Daniel Simon -  This audio file is made available under the Creative Commons 3.0 licence: http://soundbible.com/2156-Text-Message-Alert-3.html

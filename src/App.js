@@ -62,5 +62,3 @@ Run a function that decrements the seconds then decrements the minutes when seco
 ↓
 12) start from step 1 again. ✔
 */
-
-// audio file from here: http://soundbible.com/2157-Text-Message-Alert-4.html
