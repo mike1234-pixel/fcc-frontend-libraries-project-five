@@ -15,7 +15,7 @@ class Clock extends Component {
       breakSeconds: 0,
       breakMinutesDecrementing: 5,
       breakSecondsDecrementing: 0,
-      sequenceNumber: 0
+      sequenceNumber: 0,
     };
     this.incrementSessionMinutes = this.incrementSessionMinutes.bind(this);
     this.decrementSessionMinutes = this.decrementSessionMinutes.bind(this);
@@ -31,24 +31,24 @@ class Clock extends Component {
 
   // click handlers for session minutes (increment and decrement)
   incrementSessionMinutes() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         sessionMinutes:
           prevState.sessionMinutes === 60
             ? prevState.sessionMinutes
-            : prevState.sessionMinutes + 1
+            : prevState.sessionMinutes + 1,
       };
     });
   }
   // ternary stops user incrementing session length to greater than 60
 
   decrementSessionMinutes() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         sessionMinutes:
           prevState.sessionMinutes <= 1
             ? prevState.sessionMinutes
-            : prevState.sessionMinutes - 1
+            : prevState.sessionMinutes - 1,
       };
     });
   }
@@ -58,20 +58,20 @@ class Clock extends Component {
   // click handlers for break minutes (increment and decrement)
 
   incrementBreakMinutes() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
-        breakMinutes: prevState.breakMinutes + 1
+        breakMinutes: prevState.breakMinutes + 1,
       };
     });
   }
 
   decrementBreakMinutes() {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         breakMinutes:
           prevState.breakMinutes <= 1
             ? prevState.breakMinutes
-            : prevState.breakMinutes - 1
+            : prevState.breakMinutes - 1,
       };
     });
   }
@@ -81,27 +81,27 @@ class Clock extends Component {
 
   setMinutesIncrement() {
     this.setState({
-      sessionMinutesDecrementing: this.state.sessionMinutes + 1
+      sessionMinutesDecrementing: this.state.sessionMinutes + 1,
     });
   }
 
   setMinutesDecrement() {
     this.setState({
       sessionMinutesDecrementing:
-        this.state.sessionMinutes <= 1 ? 1 : this.state.sessionMinutes - 1
+        this.state.sessionMinutes <= 1 ? 1 : this.state.sessionMinutes - 1,
     });
   }
 
   setBreakMinutesIncrement() {
     this.setState({
-      breakMinutesDecrementing: this.state.breakMinutes + 1
+      breakMinutesDecrementing: this.state.breakMinutes + 1,
     });
   }
 
   setBreakMinutesDecrement() {
     this.setState({
       breakMinutesDecrementing:
-        this.state.breakMinutes <= 1 ? 1 : this.state.breakMinutes - 1
+        this.state.breakMinutes <= 1 ? 1 : this.state.breakMinutes - 1,
     });
   }
 
@@ -111,9 +111,9 @@ class Clock extends Component {
     //disable start button
     this.refs.btn.setAttribute("disabled", "disabled");
 
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
-        sequenceNumber: prevState.sequenceNumber + 1
+        sequenceNumber: prevState.sequenceNumber + 1,
       };
     });
 
@@ -128,7 +128,7 @@ class Clock extends Component {
         sessionSecondsTimer = sessionSecondsTimer - 1;
         this.setState(() => {
           return {
-            sessionSecondsDecrementing: sessionSecondsTimer
+            sessionSecondsDecrementing: sessionSecondsTimer,
           };
         });
       }
@@ -156,7 +156,7 @@ class Clock extends Component {
           this.setState(() => {
             return {
               sessionMinutesDecrementing: sessionMinutesTimer,
-              sessionSecondsDecrementing: sessionSecondsTimer
+              sessionSecondsDecrementing: sessionSecondsTimer,
             };
           });
         }
@@ -175,7 +175,7 @@ class Clock extends Component {
         breakSecondsTimer = breakSecondsTimer - 1;
         this.setState(() => {
           return {
-            breakSecondsDecrementing: breakSecondsTimer
+            breakSecondsDecrementing: breakSecondsTimer,
           };
         });
       }
@@ -193,7 +193,7 @@ class Clock extends Component {
           this.setState(() => {
             return {
               breakMinutesDecrementing: breakMinutesTimer,
-              breakSecondsDecrementing: breakSecondsTimer
+              breakSecondsDecrementing: breakSecondsTimer,
             };
           });
         }
@@ -210,7 +210,7 @@ class Clock extends Component {
         breakSecondsTimer = breakSecondsTimer - 1;
         this.setState(() => {
           return {
-            breakSecondsDecrementing: breakSecondsTimer
+            breakSecondsDecrementing: breakSecondsTimer,
           };
         });
       }
@@ -228,7 +228,7 @@ class Clock extends Component {
           this.setState(() => {
             return {
               breakMinutesDecrementing: breakMinutesTimer,
-              breakSecondsDecrementing: breakSecondsTimer
+              breakSecondsDecrementing: breakSecondsTimer,
             };
           });
         }
@@ -240,7 +240,7 @@ class Clock extends Component {
 
   handleReset() {
     this.refs.btn.removeAttribute("disabled", "disabled");
-    this.setState(prevState => {
+    this.setState((prevState) => {
       return {
         sessionMinutes: 25,
         sessionSeconds: 0,
@@ -250,18 +250,18 @@ class Clock extends Component {
         breakSeconds: 0,
         breakMinutesDecrementing: 5,
         breakSecondsDecrementing: 0,
-        sequenceNumber: 0
+        sequenceNumber: 0,
       };
     });
     clearInterval(this.myInterval);
   }
 
   render() {
-    const date = new Date();
-    const year = date.getFullYear();
-
     return (
-      <div>
+      <div className="app-container">
+        <h1 className="app-header">
+          Pomodoro<br></br> Clock
+        </h1>
         <div id="session-div">
           <h2>
             Session Length:{" "}
@@ -270,6 +270,7 @@ class Clock extends Component {
               : this.state.sessionMinutes + " minutes"}
           </h2>
           <button
+            className="button"
             onClick={() => {
               this.setMinutesIncrement();
               this.incrementSessionMinutes();
@@ -279,6 +280,7 @@ class Clock extends Component {
             +
           </button>
           <button
+            className="button"
             onClick={() => {
               this.setMinutesDecrement();
               this.decrementSessionMinutes();
@@ -289,7 +291,7 @@ class Clock extends Component {
           </button>
         </div>
         <div id="clock">
-          <h2 id="time-left">
+          <h2 id="time-left" className="timer">
             <span id="session-length">
               {this.state.sessionMinutesDecrementing}
             </span>
@@ -298,10 +300,15 @@ class Clock extends Component {
               ? "0" + this.state.sessionSecondsDecrementing
               : this.state.sessionSecondsDecrementing}
           </h2>
-          <button onClick={this.handleStart} id="start_stop" ref="btn">
+          <button
+            className="button"
+            onClick={this.handleStart}
+            id="start_stop"
+            ref="btn"
+          >
             Start
           </button>
-          <button onClick={this.handleReset} id="reset">
+          <button className="button" onClick={this.handleReset} id="reset">
             Reset
           </button>
         </div>
@@ -313,6 +320,7 @@ class Clock extends Component {
               : this.state.breakMinutes + " minutes"}
           </h2>
           <button
+            className="button"
             onClick={() => {
               this.setBreakMinutesIncrement();
               this.incrementBreakMinutes();
@@ -322,6 +330,7 @@ class Clock extends Component {
             +
           </button>
           <button
+            className="button"
             onClick={() => {
               this.setBreakMinutesDecrement();
               this.decrementBreakMinutes();
@@ -331,7 +340,7 @@ class Clock extends Component {
             -
           </button>
 
-          <h2 id="break-length">
+          <h2 id="break-length" className="timer">
             {" "}
             <span id="break-length">{this.state.breakMinutesDecrementing}</span>
             :
@@ -341,9 +350,9 @@ class Clock extends Component {
           </h2>
           <h2>Long Break Length: {this.state.breakMinutes * 4 + " minutes"}</h2>
           <h3>Current Pomodoro:</h3>
-          <p>{this.state.sequenceNumber}</p>
+          <p className="timer">{this.state.sequenceNumber}</p>
           <br></br>
-          <p>Built by Mike Tandy {year} with React</p>
+          <p>Designed and built by Michael Tandy</p>
         </div>
       </div>
     );

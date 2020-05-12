@@ -1,0 +1,33 @@
+// vars
+$green: #73a857;
+$dark: #342224;
+$purple: #9b59b6;
+$turqoise: #16a085;
+$blue: #77b1a9;
+$navy: #2c3e50;
+$red: #e74c3c;
+$red-light: #fb6964;
+$grey: #bdbb99;
+$yellow: #f39c12;
+$black: #000;
+$cyan: #6bd4cf;
+// global reset
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 1 rem = 10px, because 10px/16px (which is the default) = 62.5%
+}
+
+body {
+  margin: 0;
+  font-size: 2rem;
+  color: #000;
+  background-color: $cyan;
+  font-family: Arial, sans-serif;
+}
