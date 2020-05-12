@@ -11,7 +11,20 @@ body {
   font-family: "Fredericka the Great";
 }
 
-.how-to__header {
-  font-family: "Fredericka the Great";
-  margin: 10rem 0 10rem;
+.how-to {
+  &__header {
+    font-family: "Fredericka the Great";
+    margin: 10rem 0 10rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .how-to {
+    &__header {
+      margin: 10rem 0 0;
+    }
+    &__text {
+      font-size: 1.7rem;
+    }
+  }
 }

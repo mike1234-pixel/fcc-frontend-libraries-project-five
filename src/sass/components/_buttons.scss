@@ -55,7 +55,7 @@
   border-color: $black;
   transition: all 0.2s ease-in;
   font-size: 2rem;
-  font-family: Jost, sans-serif;
+  font-family: Overpass, sans-serif;
 
   &:hover {
     background-color: $red;
@@ -70,16 +70,56 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 1000px) {
   .button {
-    @include button-styles();
+    transition: all 0.2s ease;
 
-    &:hover {
+    &:hover,
+    &:active {
+      outline: none;
+      transform: none;
+      box-shadow: none;
+      &::after {
+        transform: none;
+        opacity: 0;
+      }
+    }
+
+    &:active {
       background-color: $red;
       color: $black;
-    }
-    &:active {
-      color: $black;
+      transform: translateY(0);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     }
   }
 }
+
+// @media (min-width: 1200px) {
+//   .button {
+//     @include button-styles();
+
+//     &:hover {
+//       background-color: $red;
+//       color: $black;
+//     }
+//     &:active {
+//       color: $black;
+//     }
+//   }
+// }
+
+// &:hover,
+// &:active {
+//   outline: none;
+//   transform: translateY(-3px);
+//   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+//   &::after {
+//     transform: scaleX(2) scaleY(1.5);
+//     opacity: 0;
+//   }
+// }
+
+// &:active {
+//   transform: translateY(-1px);
+//   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+// }

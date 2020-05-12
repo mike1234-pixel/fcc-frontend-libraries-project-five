@@ -136,6 +136,10 @@
     align-items: center;
     margin: 0 10rem 0;
     text-align: center;
+
+    @media (max-width: 600px) {
+      margin: 0;
+    }
   }
 
   &__header {
